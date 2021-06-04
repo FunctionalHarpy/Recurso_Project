@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 import net.recurso.entidad.Menu;
 import net.recurso.entidad.Usuario;
 import net.recurso.services.UsuarioService;
@@ -33,8 +34,22 @@ public class ServletUsuario extends HttpServlet {
 		tipo=request.getParameter("ACCION");
 		if(tipo.equals("INICIAR"))
 			iniciar(request,response);
+		else if(tipo.equals("LISTAR"))
+			listado(request,response);
 		else if(tipo.equals("CERRAR"))
 			cerrar(request,response);
+	}
+
+
+	private void listado(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//invocar al método listAll
+				List<Usuario> data=sUsuario.listarTodos();
+				//enviar al cliente la respuesta
+				//PASO 1: crear un atributo
+				request.setAttribute("usuarios", data);
+				//PASO 2: direccionar a la página docente.jsp
+				request.getRequestDispatcher("/usuarios.jsp").forward(request, response);
+		
 	}
 
 

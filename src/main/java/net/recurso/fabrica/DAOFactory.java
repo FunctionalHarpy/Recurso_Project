@@ -2,6 +2,7 @@ package net.recurso.fabrica;
 
 import net.recurso.fabrica.DAOFactory;
 import net.recurso.fabrica.MySqlDAOFactory;
+import net.recurso.interfaces.SolicitudDAO;
 import net.recurso.interfaces.UsuarioDAO;
 
 public abstract class DAOFactory {
@@ -12,6 +13,7 @@ public abstract class DAOFactory {
 	 public static final int XML = 5;
 	 
 	 public abstract UsuarioDAO getUsuarioDAO(); 
+	 public abstract SolicitudDAO getSolicitudDAO(); 
 	 
 	 public static DAOFactory getDAOFactory(int whichFactory){
 	        switch(whichFactory){

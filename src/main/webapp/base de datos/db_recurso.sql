@@ -38,7 +38,7 @@ insert into tb_user values(1, 'elena', 'elena', 'Elena', 'Efimova', STR_TO_DATE(
 'testuser@cibertec.edu.pe', 'Mordor', '3');
 
 insert into tb_menu values (1,'Usuario','ServletUsuario?accion=LISTAR'),
-(2,'Solicitud','solicitud.jsp'),(3,'ApelaciÃ³n','apelacion.jsp'),(4,'Expediente','expediente.jsp');
+(2,'Solicitud','solicitud.jsp'),(3,'Apelación','apelacion.jsp'),(4,'Expediente','expediente.jsp');
 
  
 
@@ -49,3 +49,20 @@ INSERT INTO `tb_acceso` VALUES (1,1),(2,1),(3,1),(4,1),(1,2),(2,2),(3,2),(4,2);
 SELECT * FROM TB_ACCESO;
 SELECT * FROM TB_USER;
 SELECT * FROM TB_MENU;
+
+create table tb_solicitud
+(
+cod_soli int primary key not null auto_increment,
+cod_user int,
+cod_area int,
+cod_informe int,
+fec_info date,
+perfil_soli varchar(100),
+descri_soli varchar(100),
+CONSTRAINT tb_solicitud_FK1 foreign key (cod_user) references tb_user (cod_user)
+);
+
+insert into tb_solicitud
+	values (null,1,1,1002,CURDATE(),'Solicitud Vacaciones','De acuerdo a la ley me corresponde Vacaciones : )');
+
+Select * from tb_solicitud;

@@ -85,4 +85,53 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 		return lista;
 	}
 
+	@Override
+	public List<Usuario> listAll() {
+		//declarar y crear lista de Docentes
+				List<Usuario> lista=new ArrayList<Usuario>();
+				Connection cn=null;
+				PreparedStatement pstm=null;
+				ResultSet rs=null;
+				try {
+					//1
+					cn=MySqlConexion.getConexion();
+					//2
+					String sql="select cod_user, nom_user, ape_user, fdn_user, correo_user, dir_user,"
+							+ "estado_user from tb_user"; 
+					//3
+					pstm=cn.prepareStatement(sql);
+					//4 (NO HAYYYYYY)
+					
+					//5
+					rs=pstm.executeQuery();
+					//6 while
+					while(rs.next()) {
+						//7 crear objeto de la clase Usuario
+						Usuario bean=new Usuario();
+						//8
+						bean.setCodigo(rs.getInt(1));
+						bean.setNombres(rs.getString(2));
+						bean.setApellidos(rs.getString(3));
+						bean.setFdn(rs.getString(4));
+						bean.setCorreo(rs.getString(5));
+						bean.setDire(rs.getString(6));
+						bean.setEstado(rs.getInt(7));
+						//9
+						lista.add(bean);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				finally {
+					try {
+						if(rs!=null) rs.close();
+						if(pstm!=null) pstm.close();
+						if(cn!=null) cn.close();
+					} catch (SQLException e2) {
+						e2.printStackTrace();
+					}
+				}
+				return lista;
+	}
+
 }

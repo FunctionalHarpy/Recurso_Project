@@ -1,6 +1,7 @@
 package net.recurso.services;
 import java.util.List;
 
+
 import net.recurso.entidad.Menu;
 import net.recurso.entidad.Usuario;
 import net.recurso.fabrica.DAOFactory;
@@ -14,6 +15,9 @@ public class UsuarioService {
 	}
 	public List<Menu> obtenerMenus(int codUsuario){
 		return usuarioDAO.traerMenus(codUsuario);
+	}
+	public List<Usuario> listarTodos(){
+		return usuarioDAO.listAll();
 	}
 
 }
