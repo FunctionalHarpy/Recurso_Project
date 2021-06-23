@@ -38,6 +38,79 @@ public class ServletUsuario extends HttpServlet {
 			listado(request,response);
 		else if(tipo.equals("CERRAR"))
 			cerrar(request,response);
+		else if(tipo.equals("GUARDAR"))
+			guardar(request,response);
+		else if(tipo.equals("ELIMINAR"))
+			eliminar(request,response);
+	}
+
+
+	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String cod;
+		cod=request.getParameter("codigoEliminar");
+		int salida;
+		salida=sUsuario.eliminar(Integer.parseInt(cod));
+		if(salida>0) {
+			request.setAttribute("MENSAJE", "Usuario eliminado");
+		}
+		else {
+			request.setAttribute("MENSAJE", "Error al eliminar usuario");
+		}
+		listado(request, response);
+		
+	}
+
+
+	private void guardar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String cod, login, pass,nom, ape, fdn, email, dir, estado;
+		cod=request.getParameter("codigo");
+		login=request.getParameter("username");
+		pass=request.getParameter("password");
+		nom=request.getParameter("nombres");
+		ape=request.getParameter("apellidos");
+		fdn=request.getParameter("fdn");
+		email=request.getParameter("correo");
+		dir=request.getParameter("direccion");
+		estado=request.getParameter("estado");
+		//
+		Usuario bean = new Usuario();
+		//
+		bean.setCodigo(Integer.parseInt(cod));
+		bean.setLogin(login);
+		bean.setClave(pass);
+		bean.setNombres(nom);
+		bean.setApellidos(ape);
+		bean.setFdn(fdn);
+		bean.setCorreo(email);
+		bean.setDire(dir);
+		bean.setEstado(Integer.parseInt(estado));
+		//
+		if (bean.getCodigo()==0) {//insert
+			int salida;
+			salida=sUsuario.agregar(bean);
+			if(salida>0) {
+				request.setAttribute("MENSAJE", "Usuario registrado");
+				
+			}
+			else {
+				request.setAttribute("MENSAJE", "Error al registrar usuario");
+			}
+			
+		}
+		else {//update
+			int salida;
+			salida=sUsuario.actualizar(bean);
+			if (salida>0) {
+				request.setAttribute("MENSAJE", "Usuario actualizado");
+				
+			}else {
+				request.setAttribute("MENSAJE", "Error al actualizar usuario");
+			}
+			
+		}
+		listado(request,response);
+			
+		
 	}
 
 

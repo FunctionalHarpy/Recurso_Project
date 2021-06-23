@@ -19,5 +19,16 @@ public class UsuarioService {
 	public List<Usuario> listarTodos(){
 		return usuarioDAO.listAll();
 	}
+	
+	public int eliminar(int cod) {
+		return usuarioDAO.delete(cod);
+	}
+	
+	public int agregar (Usuario bean) {
+		return usuarioDAO.save(bean);
+	}
+	public int actualizar(Usuario bean) {
+		return usuarioDAO.update(bean);
+	}
 
 }

@@ -134,4 +134,99 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 				return lista;
 	}
 
+	@Override
+	public int save(Usuario bean) {
+		int salida=-1;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="insert into tb_user values(null,?,?,?,?,?,?,?,?)";
+			pstm=cn.prepareStatement(sql);
+			//
+			pstm.setString(1, bean.getLogin());
+			pstm.setString(2, bean.getClave());
+			pstm.setString(3, bean.getNombres());
+			pstm.setString(4, bean.getApellidos());
+			pstm.setString(5, bean.getFdn());
+			pstm.setString(6, bean.getCorreo());
+			pstm.setString(7, bean.getDire());
+			pstm.setInt(8, bean.getEstado());
+			//
+			salida=pstm.executeUpdate();
+		} catch (Exception e) {
+			// 
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return salida;
+	}
+
+	@Override
+	public int delete(int cod) {
+		int salida=-1;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="delete from tb_user where cod_user=?";
+			pstm=cn.prepareStatement(sql);
+			pstm.setInt(1, cod);
+			salida=pstm.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch(SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return salida;
+	}
+
+	@Override
+	public int update(Usuario bean) {
+		int salida=-1;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="update tb_user set log_user=?,pass_user=?,nom_user=?,ape_user=?,fdn_user=?,correo_user=?,dir_user=?,estado_user=? where cod_user=?";
+			pstm=cn.prepareStatement(sql);
+			pstm.setString(1, bean.getLogin());
+			pstm.setString(2, bean.getClave());
+			pstm.setString(3, bean.getNombres());
+			pstm.setString(4, bean.getApellidos());
+			pstm.setString(5, bean.getFdn());
+			pstm.setString(6, bean.getCorreo());
+			pstm.setString(7, bean.getDire());
+			pstm.setInt(8, bean.getEstado());
+			pstm.setInt(9, bean.getCodigo());
+			//
+			salida=pstm.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return salida;
+	}
+	
+	
+
 }

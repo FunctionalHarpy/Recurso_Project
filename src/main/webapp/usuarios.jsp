@@ -120,7 +120,7 @@
 				  </div>
 				  <div class="form-group">
 				    <label for="exampleInputPassword1">Fecha de Nacimiento</label>
-				    <input type="text" class="form-control" data-toggle="datepicker">
+				    <input type="date" class="form-control" data-toggle="datepicker" id="idFdn">
 				  </div>
 				  <div class="form-group">
 				    <label for="exampleInputPassword1">Correo</label>
@@ -147,6 +147,37 @@
 		  </div>
 		</div>
   		<!-- FIN - Modal PARA REGISTRAR Y ACTUALIZAR USUARIO-->
+  		
+  		
+		<!-- INICIO - Modal PARA ELIMINAR DOCENTE-->
+		<div class="modal fade" id="modalEliminar" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel">SISTEMA</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form id="formUsuario"  action="ServletUsuario?ACCION=ELIMINAR" method="post">
+		         	    <input type="hidden" class="form-control" id="idCodigoEliminar" name="codigoEliminar">
+				  SEGURO DE ELIMINAR ?
+				  <div class="modal-footer">
+			        <button type="submit" class="btn btn-primary">SI</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>			        
+			      </div>
+				</form>
+		      </div>
+		      
+		    </div>
+		  </div>
+		</div>
+  		<!-- FIN - Modal PARA ELIMINAR DOCENTE-->  	
+  		
+  		
+  		
+  	</div>	
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js">
@@ -160,10 +191,75 @@
 <script src="js/datepicker.js"></script>
 	<script>
 		$(document).ready(function() {
-		    $('#tableDocentes').DataTable();
+		    $('#tableUsuarios').DataTable();
 		    
 		} );
-	
+		$(document).on("click",".btn-editar",function(){
+			//variables
+			var cod,log,pass,nom,ape,fdn,correo,dir,estado;
+			//obtener valores de la fila actual según donde se haga clic al botón editar
+			cod=$(this).parents("tr").find("td")[0].innerHTML;
+			log=$(this).parents("tr").find("td")[1].innerHTML;
+			pass=$(this).parents("tr").find("td")[2].innerHTML;
+			nom=$(this).parents("tr").find("td")[3].innerHTML;
+			ape=$(this).parents("tr").find("td")[4].innerHTML;
+			fdn=$(this).parents("tr").find("td")[5].innerHTML;
+			correo=$(this).parents("tr").find("td")[6].innerHTML;
+			dir=$(this).parents("tr").find("td")[7].innerHTML;
+			estado=$(this).parents("tr").find("td")[8].innerHTML;
+			
+			//mostrar los valores de las variables en los controles(cajas y select)
+			$("#idCodigo").val(cod);
+			$("#idUsername").val(log);
+			$("#idPassword").val(pass);
+			$("#idNombres").val(nom);
+			$("#idApellidos").val(ape);
+			$("#idFdn").val(fdn);
+			$("#idCorreo").val(correo);
+			$("#idDireccion").val(dir);
+			$("#idEstado").val(estado);
+			
+		})
+		
+		//asignar evento click a los botones con clase "btn-eliminar"
+		$(document).on("click",".btn-eliminar",function(){
+			//variables
+			var cod;
+			//obtener código de la fila actual según donde se haga clic al botón editar
+			cod=$(this).parents("tr").find("td")[0].innerHTML;
+			//
+			$("#idCodigoEliminar").val(cod);
+		
+		})
+		//asignar evento click al botón con ID "btn-cerrar"
+		$(document).on("click","#btn-cerrar",function(){
+			 //resetear validación 
+			 $('#formUsuario'). data("bootstrapValidator").resetForm(true);
+			 //limpiar cajas
+			 $('#formUsuario').trigger("reset");
+			 //asignar "0" a la caja con ID "idCodigo" 
+			 $("#idCodigo").val(0);
+		})
+		
+		//implementar función para llenar el select con ID "idEstado"
+		function llenarCondicion(){
+			//función en JQUERY que permite leer un JSON
+			/*
+				la función getJSON tiene 3 parámetros:
+				1. llamar al servlet "ServletCondicionJSON"	
+				2. parámetro o parámetros que necesita el "ServletCondicionJSON", en este
+					caso no existen parámetros debido a que no existe "request.getParameter"
+				3. respuesta del "ServletEstadoJSON"	
+			*/
+			$.getJSON("ServletEstadoJSON",{},function(response){
+				//bucle para realizar recorrido sobre "response"
+				$.each(response,function(index,item){
+					$("#idEstado").append("<option value='"+item.codigo+"'>"+item.nombre+"</option>");
+				})
+				
+			})
+			
+		}
 	</script>	
 	
 	
