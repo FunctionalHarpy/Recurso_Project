@@ -242,15 +242,17 @@
 		$(document).on("click","#btn-consultar",function(){
 			//leer caja idEstado
 			var est;
-			est=$("#idEstado").val();
+			est=$("#idEstado2").val();
 			//limpiar filas dentro del tbody //
-			$("#tableUsuario tbody").empty();
+			$("#tableUsuarios tbody").empty();
 			$.getJSON("ServletUsuarioPorEstado",{estado:est},function(response){
+				console.log(response);
 				$.each(response,function(index,item){
-					$("#tableUsuario").append("<tr><td>"+item.codigo+"</td><td>"+item.login+"</td><td>"+item.clave+"</td><td>"+item.nombres+"</td><td>"+
+					console.log(item)
+					$("#tableUsuarios").append("<tr><td>"+item.codigo+"</td><td>"+item.login+"</td><td>"+item.clave+"</td><td>"+item.nombres+"</td><td>"+
 												item.apellidos+"</td><td>"+item.fdn+"</td><td>"+item.correo+"</td><td>"+item.dire+"</td><td>"+item.estado+
-												"</td><td><button type='button' class='btn btn-info btn-editar' data-toggle='modal' data-target='#modalUsuario'>Editar</button></td>"+
-												"<td><button type='button' class='btn btn-danger btn-eliminar' data-toggle='modal' data-target='#modalEliminar'>Eliminar</button></td></tr>");
+												"</td><td><button type='button' class='btn btn-info btn-editar'  data-target='#modalUsuario' data-toggle='modal'>Editar</button></td>"+
+												"<td><button type='button' class='btn btn-danger btn-eliminar' data-target='#modalEliminar' data-toggle='modal'>Eliminar</button></td></tr>");
 				})
 			})
 			
