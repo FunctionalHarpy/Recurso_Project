@@ -59,6 +59,8 @@
         <thead>
             <tr>
                 <th>CÓDIGO</th>
+                <th>USUARIO</th>
+                <th>CONTRASEÑA</th>
                 <th>NOMBRE</th>
                 <th>APELLIDO</th>
                 <th>FECHA DE NACIMIENTO</th>
@@ -74,6 +76,8 @@
         	<c:forEach items="${requestScope.usuarios}" var="row">
 	            <tr>
 	                <td>${row.codigo}</td>
+	                <td>${row.login}</td>
+	                <td>${row.clave}</td>
 	                <td>${row.nombres}</td>
 	                <td>${row.apellidos}</td>
 	                <td>${row.fdn}</td>
@@ -120,7 +124,7 @@
 				  </div>
 				  <div class="form-group">
 				    <label for="exampleInputPassword1">Fecha de Nacimiento</label>
-				    <input type="date" class="form-control" data-toggle="datepicker" id="idFdn">
+				    <input type="date" class="form-control"  id="idFdn" name="fdn" placeholder="Ingresar fecha de nacimiento">
 				  </div>
 				  <div class="form-group">
 				    <label for="exampleInputPassword1">Correo</label>
@@ -192,6 +196,7 @@
 	<script>
 		$(document).ready(function() {
 		    $('#tableUsuarios').DataTable();
+		    llenarEstado();
 		    
 		} );
 		$(document).on("click",".btn-editar",function(){
@@ -242,7 +247,7 @@
 		})
 		
 		//implementar función para llenar el select con ID "idEstado"
-		function llenarCondicion(){
+		function llenarEstado(){
 			//función en JQUERY que permite leer un JSON
 			/*
 				la función getJSON tiene 3 parámetros:
