@@ -96,8 +96,7 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 					//1
 					cn=MySqlConexion.getConexion();
 					//2
-					String sql="select cod_user, nom_user, ape_user, fdn_user, correo_user, dir_user,"
-							+ "estado_user from tb_user"; 
+					String sql="select * from tb_user"; 
 					//3
 					pstm=cn.prepareStatement(sql);
 					//4 (NO HAYYYYYY)
@@ -110,12 +109,14 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 						Usuario bean=new Usuario();
 						//8
 						bean.setCodigo(rs.getInt(1));
-						bean.setNombres(rs.getString(2));
-						bean.setApellidos(rs.getString(3));
-						bean.setFdn(rs.getString(4));
-						bean.setCorreo(rs.getString(5));
-						bean.setDire(rs.getString(6));
-						bean.setEstado(rs.getInt(7));
+						bean.setLogin(rs.getString(2));
+						bean.setClave(rs.getString(3));
+						bean.setNombres(rs.getString(4));
+						bean.setApellidos(rs.getString(5));
+						bean.setFdn(rs.getString(6));
+						bean.setCorreo(rs.getString(7));
+						bean.setDire(rs.getString(8));
+						bean.setEstado(rs.getInt(9));
 						//9
 						lista.add(bean);
 					}
@@ -225,6 +226,47 @@ public class MySqlUsuarioDAO implements UsuarioDAO {
 			}
 		}
 		return salida;
+	}
+
+	@Override
+	public List<Usuario> listUsuariosPorEst(int estado) {
+		List<Usuario> lista = new ArrayList<Usuario>();
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		ResultSet rs=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="select cod_user, log_user, pass_user, nom_user, ape_user,"
+					+"fdn_user, correo_user, dir_user, estado_user from tb_user where estado_user=?";
+			pstm=cn.prepareStatement(sql);
+			pstm.setInt(1, estado);
+			rs=pstm.executeQuery();
+			while(rs.next()) {
+				Usuario bean=new Usuario();
+				bean.setCodigo(rs.getInt(1));
+				bean.setLogin(rs.getString(2));
+				bean.setClave(rs.getString(3));
+				bean.setNombres(rs.getString(4));
+				bean.setApellidos(rs.getString(5));
+				bean.setFdn(rs.getString(6));
+				bean.setCorreo(rs.getString(7));
+				bean.setDire(rs.getString(8));
+				bean.setEstado(rs.getInt(9));
+				lista.add(bean);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstm!=null) rs.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return lista;
 	}
 	
 	

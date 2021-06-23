@@ -30,5 +30,8 @@ public class UsuarioService {
 	public int actualizar(Usuario bean) {
 		return usuarioDAO.update(bean);
 	}
+	public List<Usuario> listarTodosUsuariosPorEstado(int estado){
+		return usuarioDAO.listUsuariosPorEst(estado);
+	}
 
 }

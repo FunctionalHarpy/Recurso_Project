@@ -8,13 +8,11 @@
 <head>
 <meta charset="ISO-8859-1">
 <!-- Bootstrap CSS -->
-    <!-- link rel="stylesheet" href="css/bootstrap.min.css"-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
     
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-	<!-- Tryna add a datepicker -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<!-- Datepicker CSS -->
-<link rel="stylesheet" href="css/datepicker.css">
+	
+
 
 
 <title>Usuarios</title>
@@ -50,7 +48,21 @@
 			  </button>
 			</div>
   		</c:if>
-  	<h2 class="text-center">Listado de Usuarios</h2>	
+  	<h2 class="text-center">Listado de Usuarios</h2>
+  	<!-- Consulta de Usuarios por Estado -->
+  	<form>
+		   <div class="form-row mt-4">
+			    <div class="col-auto">
+			       <label for="exampleInputPassword1">Ingresar Estado</label>
+			    </div>
+			    <div class="col-auto">
+			      	 <input type="text" class="form-control" id="idEstado2">
+			    </div>
+			    <div class="col-auto">
+			      <button type="button" class="btn btn-primary mb-2" id="btn-consultar">Consultar</button>
+			    </div>
+		  </div>
+		</form>	
   	<!-- Button trigger modal -->
 		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUsuario">
 		  Nuevo Usuario
@@ -184,21 +196,22 @@
   	</div>	
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
 	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js">
-    <!--script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"--><!--/script-->
+	
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 	<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 
 
 	<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
-	<!-- Datepicker JS-->
-<script src="js/datepicker.js"></script>
+	
+
 	<script>
 		$(document).ready(function() {
 		    $('#tableUsuarios').DataTable();
 		    llenarEstado();
 		    
 		} );
+		
 		$(document).on("click",".btn-editar",function(){
 			//variables
 			var cod,log,pass,nom,ape,fdn,correo,dir,estado;
@@ -223,6 +236,23 @@
 			$("#idCorreo").val(correo);
 			$("#idDireccion").val(dir);
 			$("#idEstado").val(estado);
+			
+		})
+		
+		$(document).on("click","#btn-consultar",function(){
+			//leer caja idEstado
+			var est;
+			est=$("#idEstado").val();
+			//limpiar filas dentro del tbody //
+			$("#tableUsuario tbody").empty();
+			$.getJSON("ServletUsuarioPorEstado",{estado:est},function(response){
+				$.each(response,function(index,item){
+					$("#tableUsuario").append("<tr><td>"+item.codigo+"</td><td>"+item.login+"</td><td>"+item.clave+"</td><td>"+item.nombres+"</td><td>"+
+												item.apellidos+"</td><td>"+item.fdn+"</td><td>"+item.correo+"</td><td>"+item.dire+"</td><td>"+item.estado+
+												"</td><td><button type='button' class='btn btn-info btn-editar' data-toggle='modal' data-target='#modalUsuario'>Editar</button></td>"+
+												"<td><button type='button' class='btn btn-danger btn-eliminar' data-toggle='modal' data-target='#modalEliminar'>Eliminar</button></td></tr>");
+				})
+			})
 			
 		})
 		
@@ -265,13 +295,12 @@
 			})
 			
 		}
-	</script>	
+		</script>
 	
 	
 	<script type="text/javascript">    
     $(document).ready(function(){ 
-    	 $('#formUsuario').llenarFechas();
-        $('#formUsuario').bootstrapValidator({      
+    	 $('#formUsuario').bootstrapValidator({      
         	 fields:{
         		 username:{
      		 		validators:{
@@ -339,7 +368,7 @@
         		 				message:'Solo letras, digitos, guiones, comas y puntos'
         		 			}
         		 		}
-        		 	},
+        		 	}
         		 	
         		 	
         		 	
@@ -348,12 +377,7 @@
         });   
 			
     }); 
-	function llenarFechas(){
-		$('[data-toggle="datepicker"]').datepicker({
-		      autoHide: true,
-		      zIndex: 2048,
-		   })
-	}
+
 </script>
 	
 </body>
